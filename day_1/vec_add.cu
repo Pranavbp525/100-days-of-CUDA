@@ -29,7 +29,7 @@ void vector_add(float *A_h, float *B_h, float *C_h, int n) {
     int block_size = 256.0;
     int grid_size = (n + block_size - 1) / block_size;
 
-    vectorAddKernel<<grid_size, block_size>>(A_d, B_d, C_d, n);
+    vectorAddKernel<<<grid_size, block_size>>>(A_d, B_d, C_d, n);
 
     cudaDeviceSynchronize();
 
@@ -51,7 +51,24 @@ int main(){
     float* B_h = new float[n];
     float* C_h = new float[n]; 
     
-    
+
+    for (int i = 0; i < n; i++) {
+        A_h[i] = i * 1.0f;
+        B_h[i] = i * 2.0f;
+    }
+
+    vector_add(A_h, B_h, C_h, n);
+
+    for (int i = 0; i < 5; i++) {
+        std::cout << A_h[i] << " + " << B_h[i] << " = " << C_h[i] << std::endl;
+    }
+
+    delete[] A_h;
+    delete[] B_h;
+    delete[] C_h;
+
+    return 0;
+
 
 
 }
