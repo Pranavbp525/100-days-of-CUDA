@@ -2,50 +2,44 @@
 #include <cuda_runtime.h>
 using namespace std;
 
-#define TILE_SIZE 16 
+#define TILE_SIZE 2 
 
 __global__ void tiledMatrixMulKernel(float* inp1, float* inp2, float* out, int size) {
     
-    __shared__ float tile1[TILE_SIZE][TILE_SIZE];
-    __shared__ float tile2[TILE_SIZE][TILE_SIZE];
-
     
-    int row = blockIdx.y * TILE_SIZE + threadIdx.y;
-    int col = blockIdx.x * TILE_SIZE + threadIdx.x;
+    __shared__ float inp1_s[TILE_SIZE][TILE_SIZE];
+    __shared__ float inp2_s[TILE_SIZE][TILE_SIZE];
+
+    int i = threadIdx.y + blockIdx.y * TILE_SIZE;
+    int j = threadIdx.x + blockIdx.x * TILE_SIZE;
+
+    int num_phases = size/TILE_SIZE;
 
     float val = 0;
 
-    
-    for (int t = 0; t < (size + TILE_SIZE - 1) / TILE_SIZE; ++t) {
-        
-        if (row < size && (t * TILE_SIZE + threadIdx.x) < size) {
-            tile1[threadIdx.y][threadIdx.x] = inp1[row * size + t * TILE_SIZE + threadIdx.x];
-        } else {
-            tile1[threadIdx.y][threadIdx.x] = 0;
-        }
+    for(int phase = 0; phase < num_phases; ++phase){
 
-        if (col < size && (t * TILE_SIZE + threadIdx.y) < size) {
-            tile2[threadIdx.y][threadIdx.x] = inp2[(t * TILE_SIZE + threadIdx.y) * size + col];
-        } else {
-            tile2[threadIdx.y][threadIdx.x] = 0;
-        }
+        int inp1_row_index = i;
+        int inp1_col_index = phase*TILE_SIZE + threadIdx.x;
 
-        
+        inp1_s[threadIdx.y][threadIdx.x] = inp1[inp1_row_index*size + inp1_col_index];
+
+        int inp2_row_index = phase*TILE_SIZE + threadIdx.y;
+        int inp2_col_index = j;
+
+        inp2_s[threadIdx.y][threadIdx.x] = inp2[inp2_row_index*size + inp2_col_index];
+
         __syncthreads();
 
-        
-        for (int k = 0; k < TILE_SIZE; ++k) {
-            val += tile1[threadIdx.y][k] * tile2[k][threadIdx.x];
+        for(int k = 0; k < TILE_SIZE; ++k){
+            val += inp1_s[threadIdx.y][k]*inp2_s[k][threadIdx.x];
         }
-
-        
         __syncthreads();
-    }
 
-    
-    if (row < size && col < size) {
-        out[row * size + col] = val;
     }
+    out[i*size + j] = val;
+
+
 }
 
 void tiledMatrixMulHost(float* inp1_h, float* inp2_h, float* out_h, int size) {
