@@ -3,7 +3,7 @@
 #include <cuda_runtime.h>
 using namespace std;
 
-#define TILE_SIZE 2 
+#define TILE_SIZE 32 
 #define COARSE_FACTOR 4
 
 __global__ void tiledMatrixMulKernel(float* inp1, float* inp2, float* out, int size) {
@@ -65,8 +65,8 @@ void tiledMatrixMulHost(float* inp1_h, float* inp2_h, float* out_h, int size) {
     cudaMemcpy(inp1_d, inp1_h, total_size, cudaMemcpyHostToDevice);
     cudaMemcpy(inp2_d, inp2_h, total_size, cudaMemcpyHostToDevice);
 
-    dim3 blockDim(TILE_SIZE, TILE_SIZE, 1); 
-    dim3 gridDim((size + TILE_SIZE - 1) / TILE_SIZE, (size + TILE_SIZE - 1) / TILE_SIZE, 1);
+    dim3 blockDim(TILE_SIZE, TILE_SIZE, 1);
+    dim3 gridDim(size / (TILE_SIZE * COARSE_FACTOR), size / TILE_SIZE, 1); // Adjusted for coarsening
 
     tiledMatrixMulKernel<<<gridDim, blockDim>>>(inp1_d, inp2_d, out_d, size);
 
@@ -80,20 +80,18 @@ void tiledMatrixMulHost(float* inp1_h, float* inp2_h, float* out_h, int size) {
 }
 
 int main() {
-    const int size = 4; 
+    const int size = 8; // Multiple of TILE_SIZE * COARSE_FACTOR (2 * 4 = 8)
     const int total_size = size * size;
 
     float* inp1_h = new float[total_size];
     float* inp2_h = new float[total_size];
     float* out_h = new float[total_size];
 
-    
     for (int i = 0; i < total_size; i++) {
-        inp1_h[i] = static_cast<float>(i + 1); 
+        inp1_h[i] = static_cast<float>(i + 1);
         inp2_h[i] = static_cast<float>(i + 1);
     }
 
-    
     tiledMatrixMulHost(inp1_h, inp2_h, out_h, size);
 
     cout << "Matrix 1:" << endl;
