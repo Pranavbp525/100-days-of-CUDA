@@ -8,6 +8,10 @@ __global__ void convolution_2d_basic_kernel(float * inp, float * filter, float *
     int out_col = threadIdx.x + blockIdx.x * blockDim.x;
     int out_row = threadIdx.y + blockIdx.y * blockDim.y;
 
+    int full_filter_size = 2 * filter_size + 1;
+    int out_width = width - full_filter_size + 1;
+    int out_height = height - full_filter_size + 1;
+
     float val = 0.0f;
 
     for(int filter_row = 0; filter_row < 2 * filter_size + 1; filter_row++){
@@ -21,7 +25,7 @@ __global__ void convolution_2d_basic_kernel(float * inp, float * filter, float *
         }
     }
 
-    out[out_row][out_col] = val;
+    out[out_row * out_width + out_col] = val;
 
 }
 
