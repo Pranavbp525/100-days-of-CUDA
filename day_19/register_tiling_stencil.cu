@@ -12,18 +12,21 @@ __global__ void stencil_kernel(float *inp, float *out, int N) {
     int j = blockIdx.y * OUT_TILE_DIM + threadIdx.y;
     int k = blockIdx.x * OUT_TILE_DIM + threadIdx.x;
 
-    __shared__ float in_prev_s[IN_TILE_DIM][IN_TILE_DIM];
+    float in_prev;
+    float in_curr;
+    float in_next;
     __shared__ float in_curr_s[IN_TILE_DIM][IN_TILE_DIM];
-    __shared__ float in_next_s[IN_TILE_DIM][IN_TILE_DIM];
+    
 
     
     if (iStart - 1 >= 0 && iStart - 1 < N && j >= 0 && j < N && k >= 0 && k < N) {
-        in_prev_s[threadIdx.y][threadIdx.x] = inp[(iStart - 1) * N * N + j * N + k];
+        in_prev = inp[(iStart - 1) * N * N + j * N + k];
     }
 
     
     if (iStart >= 0 && iStart < N && j >= 0 && j < N && k >= 0 && k < N) {
-        in_curr_s[threadIdx.y][threadIdx.x] = inp[iStart * N * N + j * N + k];
+         in_curr = inp[iStart * N * N + j * N + k];
+         in_curr_s[threadIdx.y][threadIdx.x] = in_curr;
     }
 
     
@@ -32,7 +35,7 @@ __global__ void stencil_kernel(float *inp, float *out, int N) {
 
         
         if (i + 1 >= 0 && i + 1 < N && j >= 0 && j < N && k >= 0 && k < N) {
-            in_next_s[threadIdx.y][threadIdx.x] = inp[(i + 1) * N * N + j * N + k];
+            in_next = inp[(i + 1) * N * N + j * N + k];
         }
         __syncthreads();
 
@@ -41,21 +44,22 @@ __global__ void stencil_kernel(float *inp, float *out, int N) {
             if (threadIdx.x >= 1 && threadIdx.x < IN_TILE_DIM - 1 &&
                 threadIdx.y >= 1 && threadIdx.y < IN_TILE_DIM - 1) {
                 out[i * N * N + j * N + k] =
-                    c0 * in_curr_s[threadIdx.y][threadIdx.x] +
+                    c0 * in_curr +
                     c1 * in_curr_s[threadIdx.y][threadIdx.x - 1] +
                     c2 * in_curr_s[threadIdx.y][threadIdx.x + 1] +
                     c3 * in_curr_s[threadIdx.y - 1][threadIdx.x] +
                     c4 * in_curr_s[threadIdx.y + 1][threadIdx.x] +
-                    c5 * in_prev_s[threadIdx.y][threadIdx.x] +
-                    c6 * in_next_s[threadIdx.y][threadIdx.x];
+                    c5 * in_prev +
+                    c6 * in_next;
             }
         }
         __syncthreads();
 
         
         if (tile_i < OUT_TILE_DIM - 1) {
-            in_prev_s[threadIdx.y][threadIdx.x] = in_curr_s[threadIdx.y][threadIdx.x];
-            in_curr_s[threadIdx.y][threadIdx.x] = in_next_s[threadIdx.y][threadIdx.x];
+            in_prev = in_curr;
+            in_curr = in_next;
+            in_curr_s[threadIdx.y][threadIdx.x] = in_curr;
         }
     }
 }
