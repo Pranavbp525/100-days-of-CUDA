@@ -52,3 +52,53 @@
 - Developed basic 2D convolution kernel
 - Implemented host-side convolution verification
 - Worked with different filter sizes and padding
+
+### Day 11
+- Implemented constant memory 2D convolution kernel
+- Utilized constant memory for filter coefficients
+- Reduced global memory accesses
+
+### Day 12
+- Developed tiled 2D convolution kernel
+- Used shared memory for input tiles
+- Improved memory access patterns
+
+### Day 13
+- Created basic 1D convolution kernel
+- Implemented simple signal processing
+- Worked with 1D memory access patterns
+
+### Day 14
+- Built basic 3D convolution kernel
+- Extended convolution to volumetric data
+- Handled 3D memory access patterns
+
+### Day 15
+- Enhanced tiled 2D convolution with cached halo cells
+- Optimized shared memory usage
+- Improved boundary handling
+
+### Day 16
+- Implemented simple 3D stencil kernel
+- Basic neighborhood operations in 3D
+- Global memory implementation
+
+### Day 17
+- Developed tiled 3D stencil kernel
+- Used shared memory for 3D tiles
+- Improved memory locality
+
+### Day 18
+- Enhanced tiled 3D stencil with thread coarsening
+- Increased thread workload
+- Improved resource utilization
+
+### Day 19
+- Created register tiling 3D stencil kernel
+- Optimized register usage
+- Reduced shared memory pressure
+
+### Day 20
+- Implemented basic parallel histogram using atomic add
+- Counted character frequencies
+- Grouped results into bins
