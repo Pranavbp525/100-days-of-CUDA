@@ -5,7 +5,7 @@
 using namespace std;
 
 #define NUM_BINS 7  
-   
+
 __global__ void private_histogram(char *data, int length, int *hist) {
     int tid = threadIdx.x + blockIdx.x * blockDim.x;
 
@@ -16,7 +16,7 @@ __global__ void private_histogram(char *data, int length, int *hist) {
     }
     __syncthreads();
 
-    for (int i = tid ; i <length; i += blockDim.x*gridDim.x) {
+    for (int i = tid; i < length; i += blockDim.x * gridDim.x) {
         int pos = data[i] - 'a';
         if (pos >= 0 && pos < 26) {  
             atomicAdd(&(hist_s[pos / 4]), 1); 
@@ -46,9 +46,10 @@ void private_histogram_host(char *data_h, int length, int *hist_h) {
     cudaMemcpy(data_d, data_h, inp_size, cudaMemcpyHostToDevice);
     cudaMemset(hist_d, 0, hist_size);
 
-    int block_size = 256;  
-    int total_threads = (length + CFACTOR - 1) / CFACTOR;  
-    int grid_size = (total_threads + block_size - 1) / block_size;  
+    int block_size = 256;
+    int ELEMENTS_PER_THREAD = 4; // Each thread processes ~4 elements
+    int total_threads = (length + ELEMENTS_PER_THREAD - 1) / ELEMENTS_PER_THREAD;
+    int grid_size = (total_threads + block_size - 1) / block_size;
 
     private_histogram<<<grid_size, block_size>>>(data_d, length, hist_d);
 
