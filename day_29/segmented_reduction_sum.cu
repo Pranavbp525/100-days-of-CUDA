@@ -1,10 +1,11 @@
 #include <iostream>
 #include <cuda_runtime.h>
 using namespace std;
+#define BLOCKDIM 512
 
 __global__ void segmentedSumReductionKernel(float *input, float *out) {
-    __shared__ float input_s[blockDim.x];
-    unsigned int segment = blockDim.x * blockIdx.x;
+    __shared__ float input_s[BLOCKDIM];
+    unsigned int segment = 2 * blockDim.x * blockIdx.x;
     unsigned int i = segment + threadIdx.x;
     unsigned int t = threadIdx.x;
     input_s[t] = input[i] + input[i + blockDim.x];
