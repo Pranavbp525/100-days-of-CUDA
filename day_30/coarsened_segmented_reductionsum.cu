@@ -2,13 +2,20 @@
 #include <cuda_runtime.h>
 using namespace std;
 
+#define BLOCKDIM 512
+#define COARSEFACTOR 2
+
 __global__ void segmentedSumReductionKernel(float *input, float *out) {
-    __shared__ float input_s[blockDim.x];
-    unsigned int segment = blockDim.x * blockIdx.x;
+    __shared__ float input_s[BLOCKDIM];
+    unsigned int segment = COARSEFACTOR * 2 * blockDim.x * blockIdx.x;
     unsigned int i = segment + threadIdx.x;
     unsigned int t = threadIdx.x;
-    input_s[t] = input[i] + input[i + blockDim.x];
-    for (unsigned int stride = blockDim.x/2; stride >= 1; stride /= 2) {
+    float sum = input[i];
+    for (unsigned int tile = 1; tile < 2 * COARSEFACTOR; ++tile) {
+        sum += input[i + tile * BLOCKDIM];
+    }
+    input_s[t] = sum;
+    for (unsigned int stride = blockDim.x / 2; stride >= 1; stride /= 2) {
         __syncthreads();
         if (t < stride) {
             input_s[t] += input_s[t + stride];
@@ -20,16 +27,16 @@ __global__ void segmentedSumReductionKernel(float *input, float *out) {
 }
 
 void segmentedSumReductionHost(float *inp_h, float *out_h, int length) {
-    int block_size = 512;
-    int elements_per_block = 2 * block_size;
+    int block_size = BLOCKDIM; 
+    int elements_per_block = 2 * COARSEFACTOR * block_size;  
     int grid_size = (length + elements_per_block - 1) / elements_per_block;
 
     if ((block_size & (block_size - 1)) != 0) {
         cout << "Block size must be a power of 2." << endl;
         return;
     }
-    if (length % (2 * block_size) != 0) {
-        cout << "Input length should be a multiple of " << (2 * block_size) << " for this implementation." << endl;
+    if (length % elements_per_block != 0) {
+        cout << "Input length should be a multiple of " << elements_per_block << " for this implementation." << endl;
     }
 
     float *inp_d, *out_d;
@@ -48,9 +55,9 @@ void segmentedSumReductionHost(float *inp_h, float *out_h, int length) {
 }
 
 int main() {
-    const int block_size = 512;
+    const int block_size = BLOCKDIM; 
     const int grid_size = 4;
-    const int length = 2 * block_size * grid_size;
+    const int length = COARSEFACTOR * 2 * block_size * grid_size;  
 
     float *inp_h = new float[length];
     float out_h = 0.0f;
