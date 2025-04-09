@@ -102,3 +102,53 @@
 - Implemented basic parallel histogram using atomic add
 - Counted character frequencies
 - Grouped results into bins
+
+### Day 21
+- Developed histogram kernel with private versions in global memory
+- Reduced atomic operation conflicts
+- Improved performance through privatization
+
+### Day 22
+- Created privatized text histogram using shared memory
+- Minimized global memory atomic operations
+- Utilized shared memory for intermediate results
+
+### Day 23
+- Implemented histogram kernel with coarsening (contiguous partitioning)
+- Increased thread workload
+- Improved memory access patterns
+
+### Day 24
+- Developed histogram kernel with coarsening (interleaved partitioning)
+- Alternative coarsening approach
+- Compared performance with contiguous partitioning
+
+### Day 25
+- Built aggregated text histogram kernel
+- Combined multiple optimization techniques
+- Achieved higher performance histogram
+
+### Day 26
+- Implemented simple sum reduction kernel
+- Basic parallel reduction pattern
+- Global memory implementation
+
+### Day 27
+- Developed convergent reduction sum kernel
+- Reduced control divergence
+- Improved execution resource utilization
+
+### Day 28
+- Created shared memory reduction sum kernel
+- Minimized global memory accesses
+- Optimized memory access patterns
+
+### Day 29
+- Implemented segmented multiblock sum reduction
+- Used atomic operations for global reduction
+- Handled multiple segments in parallel
+
+### Day 30
+- Developed sum reduction with thread coarsening
+- Increased thread workload
+- Improved resource utilization efficiency
