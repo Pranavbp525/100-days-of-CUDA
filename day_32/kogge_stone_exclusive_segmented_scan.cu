@@ -4,11 +4,11 @@ using namespace std;
 
 #define SECTION_SIZE 1024  
 
-__global__ void kogge_inclusive_scan_kernel(float *x, float *y, unsigned int N) {
+__global__ void kogge_exclusive_scan_kernel(float *x, float *y, unsigned int N) {
     __shared__ float XY[SECTION_SIZE];
     unsigned int i = threadIdx.x + blockIdx.x * blockDim.x;
 
-    if (i < N) {
+    if (i < N && threadIdx.x !=0) {
         XY[threadIdx.x] = x[i];
     } else {
         XY[threadIdx.x] = 0.0f;
@@ -31,7 +31,7 @@ __global__ void kogge_inclusive_scan_kernel(float *x, float *y, unsigned int N) 
     }
 }
 
-void kogge_inclusive_scan_host(float *x_h, float *y_h, unsigned int N) {
+void kogge_exclusive_scan_host(float *x_h, float *y_h, unsigned int N) {
     if (N > SECTION_SIZE) {
         cout << "Input size N must be <= SECTION_SIZE (" << SECTION_SIZE << ")." << endl;
         return;
@@ -44,7 +44,7 @@ void kogge_inclusive_scan_host(float *x_h, float *y_h, unsigned int N) {
 
     dim3 gridDim(1);
     dim3 blockDim(SECTION_SIZE);
-    kogge_inclusive_scan_kernel<<<gridDim, blockDim>>>(x_d, y_d, N);
+    kogge_exclusive_scan_kernel<<<gridDim, blockDim>>>(x_d, y_d, N);
 
     cudaMemcpy(y_h, y_d, N * sizeof(float), cudaMemcpyDeviceToHost);
     cudaFree(x_d);
@@ -60,9 +60,9 @@ int main() {
         x_h[i] = 1.0f;
     }
 
-    kogge_inclusive_scan_host(x_h, y_h, N);
+    kogge_exclusive_scan_host(x_h, y_h, N);
 
-    cout << "Inclusive Scan Result (first 10 elements):" << endl;
+    cout << "Exclusive Scan Result (first 10 elements):" << endl;
     for (unsigned int i = 0; i < 10 && i < N; i++) {
         cout << y_h[i] << " ";
     }
