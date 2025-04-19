@@ -152,3 +152,53 @@
 - Developed sum reduction with thread coarsening
 - Increased thread workload
 - Improved resource utilization efficiency
+
+### Day 31
+- Implemented Kogge-Stone inclusive scan kernel
+- Worked with parallel prefix sum algorithm
+- Optimized for warp-level operations
+
+### Day 32
+- Developed Kogge-Stone exclusive scan variant
+- Handled boundary conditions
+- Compared performance with inclusive version
+
+### Day 33
+- Created Brent-Kung inclusive segmented scan
+- Processed multiple segments in parallel
+- Handled segment flags and boundaries
+
+### Day 34
+- Implemented coarsened inclusive scan kernel
+- Increased thread workload
+- Improved memory access efficiency
+
+### Day 35
+- Developed hierarchical scan using Kogge-Stone
+- Combined block-level and global scans
+- Optimized multi-level reduction
+
+### Day 36
+- Created single pass scan for arbitrary length inputs
+- Handled variable-sized inputs efficiently
+- Optimized memory access patterns
+
+### Day 37
+- Implemented Brent-Kung exclusive scan kernel
+- Worked with binary tree reduction pattern
+- Optimized shared memory usage
+
+### Day 38
+- Developed basic parallel merge sort with co-rank
+- Implemented co-rank function for merging
+- Worked with sorted sequences
+
+### Day 39
+- Created coarsened exclusive scan kernel
+- Increased thread workload
+- Improved resource utilization
+
+### Day 40
+- Implemented Brent-Kung hierarchical scan kernel
+- Combined block-level and global scans
+- Optimized multi-level reduction pattern
