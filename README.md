@@ -202,3 +202,53 @@
 - Implemented Brent-Kung hierarchical scan kernel
 - Combined block-level and global scans
 - Optimized multi-level reduction pattern
+
+### Day 41
+- Developed Brent-Kung single pass scan kernel
+- Optimized for single pass execution
+- Reduced global memory transactions
+
+### Day 42
+- Created tiled merge kernel
+- Implemented parallel merging of sorted sequences
+- Used shared memory for efficient merging
+
+### Day 43
+- Enhanced tiled merge kernel with circular buffer
+- Improved memory access patterns
+- Reduced shared memory bank conflicts
+
+### Day 44
+- Implemented SPMV COO kernel
+- Sparse matrix-vector multiplication in COO format
+- Handled irregular memory access patterns
+
+### Day 45
+- Developed SPMV CSR kernel
+- Optimized sparse matrix-vector multiplication
+- Utilized CSR format for better memory efficiency
+
+### Day 46
+- Created SPMV ELL kernel
+- Implemented ELLPACK format sparse matrix multiplication
+- Handled padded matrix rows efficiently
+
+### Day 47
+- Built SPMV JDS kernel
+- Implemented jagged diagonal storage format
+- Optimized for matrices with varying row lengths
+
+### Day 48
+- Developed BFS vertex-centric push kernel
+- Breadth-first search using push-based approach
+- Optimized for frontier expansion
+
+### Day 49
+- Created BFS vertex-centric pull kernel
+- Alternative BFS implementation using pull approach
+- Optimized for different graph structures
+
+### Day 50
+- Implemented BFS edge-centric kernel
+- Breadth-first search processing edges in parallel
+- Efficient frontier processing for large graphs
