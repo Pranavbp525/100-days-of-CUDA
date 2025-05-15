@@ -252,3 +252,88 @@
 - Implemented BFS edge-centric kernel
 - Breadth-first search processing edges in parallel
 - Efficient frontier processing for large graphs
+
+### Day 51
+- Implemented vertex-centric push-based BFS using CUDA
+- Used CSR (Compressed Sparse Row) graph representation
+- Managed frontiers for level-synchronous traversal
+
+### Day 52
+- Developed private vertex-centric push-based BFS with shared memory
+- Used per-block private frontiers to reduce global memory contention
+- Improved parallelism and efficiency for BFS traversal
+
+### Day 53
+- Implemented ReLU (Rectified Linear Unit) forward pass kernel
+- Compared CPU and GPU performance for large arrays
+- Verified correctness and measured speedup
+
+### Day 54
+- Developed both forward and backward ReLU kernels
+- Compared CPU and GPU implementations for both passes
+- Measured performance and verified gradients
+
+### Day 55
+- Implemented naive softmax forward kernel for batched data
+- Used per-sample normalization for numerical stability
+- Verified output sums to 1 for each sample
+
+### Day 56
+- Developed optimized softmax forward with multi-threaded kernel
+- Used shared memory and parallel reduction for max and sum
+- Improved performance for large batch and feature sizes
+
+### Day 57
+- Implemented softmax forward with kernel fusion
+- Combined exponentiation and sum in a single kernel for efficiency
+- Verified output and measured execution time
+
+### Day 58
+- Built naive softmax backward kernel for batched data
+- Used analytical gradient formula for softmax
+- Verified gradients for a few samples
+
+### Day 59
+- Implemented optimized softmax backward kernel with reduction
+- Used shared memory and parallel reduction for dot product computation
+- Improved efficiency for large batch and feature sizes
+
+### Day 60
+- Developed basic GEMM (General Matrix-Matrix Multiplication) kernel with shared memory tiling
+- Used block tiling and shared memory for efficient matrix multiplication
+- Measured performance and verified results
+
+### Day 61
+- Implemented optimized GEMM (General Matrix-Matrix Multiplication) kernel with thread coarsening
+- Used shared memory tiling and 2x2 output per thread for improved performance
+- Included benchmarking and verification in main function
+
+### Day 62
+- Developed basic GEMV (General Matrix-Vector Multiplication) kernel
+- Assigned one thread per output element for matrix-vector multiplication
+- Included correctness verification and performance measurement
+
+### Day 63
+- Implemented optimized GEMV kernel with thread coarsening and shared memory
+- Each thread processes multiple rows for improved efficiency
+- Verified results and measured performance
+
+### Day 64
+- Developed max pooling forward pass kernel for 4D tensors
+- Used CUDA to compute maximum values and indices for each pooling window
+- Prepared indices for use in backward pass
+
+### Day 65
+- Implemented average pooling forward pass kernel for 4D tensors
+- Computed mean value in each pooling window using CUDA
+- Verified output for correctness
+
+### Day 66
+- Built max pooling backward pass kernel
+- Used indices from forward pass to propagate gradients
+- Combined forward and backward max pooling in a single program
+
+### Day 67
+- Developed average pooling backward pass kernel
+- Evenly distributed gradients to all input elements in each pooling window
+- Combined forward and backward average pooling in a single program
