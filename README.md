@@ -337,3 +337,21 @@
 - Developed average pooling backward pass kernel
 - Evenly distributed gradients to all input elements in each pooling window
 - Combined forward and backward average pooling in a single program
+
+### Day 68
+- Implemented layer normalization forward pass kernel
+- Used shared memory for efficient mean and variance computation per sample
+- Applied normalization, scaling, and shifting for each feature in a batch
+- Verified output statistics and performance on sample data
+
+### Day 69
+- Developed layer normalization backward pass kernels
+- Computed gradients for gamma, beta, and input efficiently using shared memory
+- Separated parameter and input gradient computations for clarity
+- Verified gradient correctness and measured execution time
+
+### Day 70
+- Built batch normalization forward pass kernel supporting both training and inference modes
+- Used shared memory for per-channel mean and variance computation
+- Maintained running statistics for inference
+- Verified output and running statistics, and compared training vs inference performance
