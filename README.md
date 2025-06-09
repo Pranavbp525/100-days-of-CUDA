@@ -355,3 +355,108 @@
 - Used shared memory for per-channel mean and variance computation
 - Maintained running statistics for inference
 - Verified output and running statistics, and compared training vs inference performance
+
+### Day 71
+- Implemented batch normalization backward pass kernel
+- Computed gradients for input, gamma, and beta efficiently using shared memory
+- Verified correctness and performance for backward propagation
+
+### Day 72
+- Developed dropout regularization forward and backward kernels
+- Used cuRAND for random mask generation during training
+- Compared training and inference behavior, and measured dropout statistics
+
+### Day 73
+- Implemented Adam optimizer update kernel
+- Supported bias correction for first and second moments
+- Benchmarked optimizer on large parameter arrays
+
+### Day 74
+- Built cross-entropy loss forward pass kernel
+- Computed per-sample loss from softmax predictions and target labels
+- Verified loss statistics and correctness on sample data
+
+### Day 75
+- Developed cross-entropy loss backward pass kernel
+- Calculated gradients with respect to softmax predictions
+- Verified gradient correctness and non-zero count for targets
+
+### Day 76
+- Implemented neural network layer with cuBLAS-accelerated GEMM
+- Added layer normalization and fused softmax + cross-entropy loss
+- Benchmarked forward and backward passes for performance
+
+### Day 77
+- Built self-attention forward pass using cuBLAS and CUDA kernels
+- Projected inputs to Q, K, V and computed scaled dot-product attention
+- Applied softmax and aggregated outputs for attention mechanism
+
+### Day 78
+- Developed self-attention backward pass with cuBLAS and CUDA
+- Implemented gradient computation for softmax and attention scores
+- Verified gradients for Q, K, V, and input tensors
+
+### Day 79
+- Implemented multi-head attention forward pass with cuBLAS
+- Projected inputs to multiple heads and computed parallel attention
+- Concatenated head outputs and applied output projection
+
+### Day 80
+- Built multi-head attention backward pass kernel
+- Computed gradients for all attention parameters and input
+- Verified correctness of backward propagation for multi-head attention
+
+### Day 81
+- Implemented masked multi-head attention forward pass with cuBLAS
+- Applied causal masking to attention scores for autoregressive models
+- Verified correctness of masking and output aggregation
+
+### Day 82
+- Developed masked multi-head attention backward pass with cuBLAS
+- Computed gradients for masked attention, including causal mask handling
+- Verified gradients for all attention parameters and input
+
+### Day 83
+- Built multi-head cross-attention forward and backward pass with cuBLAS
+- Supported separate encoder and decoder inputs for cross-attention
+- Verified correctness of gradients for both input streams
+
+### Day 84
+- Implemented fused attention forward kernel with shared memory tiling
+- Combined softmax and value aggregation in a single CUDA kernel
+- Benchmarked performance and verified output
+
+### Day 85
+- Developed fused attention backward kernel for efficient gradient computation
+- Supported log-sum-exp trick for numerical stability
+- Verified gradients for Q, K, V, and output tensors
+
+### Day 86
+- Built FlashAttention-style forward pass kernel
+- Used tiling and online softmax for memory-efficient attention
+- Benchmarked performance on long sequences
+
+### Day 87
+- Implemented FlashAttention forward and backward pass kernels
+- Supported efficient gradient computation for Q, K, V, and output
+- Verified correctness and performance of both passes
+
+### Day 88
+- Developed positional encoding generation and application kernels
+- Generated sinusoidal positional encodings and added to input embeddings
+- Verified correctness of encoding and application
+
+### Day 89
+- Implemented rotary positional encoding (RoPE) kernel
+- Applied rotary embeddings to query matrices for attention
+- Verified correctness and position-dependent transformations
+
+### Day 90
+- Built SwiGLU activation forward pass kernel
+- Combined Swish and gating mechanism for MLP layers
+- Verified output and compared with standard activations
+
+### Day 91
+- Developed SwiGLU backward pass kernel for gradient computation
+- Calculated gradients for both gated projection and gate values
+- Verified correctness of gradients and parameter updates
