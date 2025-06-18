@@ -460,3 +460,48 @@
 - Developed SwiGLU backward pass kernel for gradient computation
 - Calculated gradients for both gated projection and gate values
 - Verified correctness of gradients and parameter updates
+
+### Day 92
+- Implemented Grouped-Query Attention (GQA) forward pass kernel
+- Supported different numbers of query and key-value heads for efficient attention
+- Verified correctness of head grouping and output aggregation
+
+### Day 93
+- Developed Grouped-Query Attention (GQA) backward pass kernel
+- Computed gradients for all GQA parameters and input
+- Verified correctness of gradients for grouped attention
+
+### Day 94
+- Built 2D convolution forward pass using cuDNN
+- Set up tensor and filter descriptors for cuDNN API
+- Verified convolution output and cuDNN algorithm selection
+
+### Day 95
+- Implemented a full CNN layer with cuDNN: convolution, batch normalization, ReLU, and max pooling
+- Chained multiple cuDNN operations for a typical CNN block
+- Verified output at each stage of the pipeline
+
+### Day 96
+- Developed INT8 quantization and dequantization kernels for matrix multiplication
+- Implemented custom INT8 GEMM and compared with FP32 reference
+- Measured quantization error and verified output correctness
+
+### Day 97
+- Built NF4 quantization and dequantization kernels for weights
+- Quantized weights to 4-bit NF4 format and reconstructed them on GPU
+- Measured quantization error and verified output
+
+### Day 98
+- Implemented QLoRA forward and backward pass kernels
+- Combined NF4 quantized base weights with LoRA adapters for efficient fine-tuning
+- Verified gradients for LoRA parameters and output correctness
+
+### Day 99
+- Developed Mixture-of-Experts (MoE) step with top-1 routing
+- Implemented token dispatch, expert computation, and output aggregation on GPU
+- Verified expert assignment and output correctness
+
+### Day 100
+- Built denoising diffusion sampling step kernel
+- Implemented reverse diffusion process for image generation
+- Verified denoising steps and final image output
